@@ -13,6 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 //import routes
 import indexRouter from './app/routes/index.route.server.js';
+import contactRouter from './app/routes/contact.route.server.js';
 
 //instantiate express application
 const app = express();
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 
 //use routes
-app.use('/', indexRouter)
+app.use('/', indexRouter);
+app.use('/contact', contactRouter);
 
-app.listen(3000)
+app.listen(3000);
