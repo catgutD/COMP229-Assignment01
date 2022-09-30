@@ -1,37 +1,59 @@
 //server.js Cathy Da 301177731 Sept 26
 
-//third-party modules
-import express from 'express';
-import logger from 'morgan';
-import session from 'express-session';
-import cookieParser from 'cookie-parser';
+import debug from 'debug';
+debug('assignment01');
+import http from 'http';
 
-//__dirname fix
-import path, {dirname} from 'path';
-import {fileURLToPath} from 'url';
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import app from './app/app.js';
 
-//import routes
-import indexRouter from './app/routes/index.route.server.js';
-import contactRouter from './app/routes/contact.route.server.js';
+const PORT = normalizePort(process.env.PORT || 3000);
+app.set('port', PORT);
 
-//instantiate express application
-const app = express();
+const server = http.createServer(app);
 
-//set up viewengine ejs
-app.set('views', path.join(__dirname, '/app/views'));
-app.set('view engine', 'ejs');
+server.listen(PORT);
+server.on('error', onError);
+server.on('listening', onListening);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '/public')));
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+    if (isNaN(port)) {
+        return val;
+    }
 
-//use routes
-app.use('/', indexRouter);
-app.use('/', contactRouter);
+    if (port >= 0) {
+        return port;
+    }
 
-app.listen(3000);
+    return false;
+}
 
-export default app;
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    let bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+function onListening() 
+{
+  let addr = server.address();
+  let bind = 'pipe ' + addr;
+  debug('Listening on ' + bind);
+}
