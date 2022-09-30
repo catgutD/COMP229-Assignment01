@@ -32,4 +32,4 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use('/', indexRouter);
 app.use('/', contactRouter);
 
-app.listen(3000);
+export default app;
