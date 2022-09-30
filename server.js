@@ -30,6 +30,6 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 //use routes
 app.use('/', indexRouter);
-app.use('/contact', contactRouter);
+app.use('/', contactRouter);
 
 app.listen(3000);
